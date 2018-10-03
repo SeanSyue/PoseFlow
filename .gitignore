@@ -1,17 +1,9 @@
-__pycache__
-alpha-pose-results-test.json
-alpha-pose-results-val.json
-test-predict/*
-val-predict/*
-val-predict-bak/*
-test-predict-bak/*
-keypoint_result*
-pose-seq-nms.py
-*.npy
-*.so
+# python temp files
+**/ __pycache__
 *.pyc
-.ipynb_checkpoints
-*/.ipynb_checkpoints/*
 
 # Pycharm
 .idea/**/workspace.xml
+
+# Workspace
+posetrack_data/*
