@@ -38,7 +38,7 @@ Results on PoseTrack Challenge validation set:
 
 ## Installation
 
-1. Download PoseTrack Dataset from [PoseTrack](https://posetrack.net/) to `AlphaPose/PoseFlow/posetrack_data/`
+1. Download PoseTrack Dataset from [PoseTrack](https://posetrack.net/) to `./posetrack_data/`
 2. (Optional) Use [DeepMatching](http://lear.inrialpes.fr/src/deepmatching/) to extract dense correspondences between adjcent frames in every video, please refer to [DeepMatching Compile Error](https://github.com/MVIG-SJTU/AlphaPose/issues/97) to compile DeepMatching correctly
 
 ```shell

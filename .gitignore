@@ -12,3 +12,6 @@ pose-seq-nms.py
 *.pyc
 .ipynb_checkpoints
 */.ipynb_checkpoints/*
+
+# Pycharm
+.idea/**/workspace.xml
