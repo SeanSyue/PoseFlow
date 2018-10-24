@@ -3,7 +3,7 @@
 Official implementation of [Pose Flow: Efficient Online Pose Tracking ](https://arxiv.org/abs/1802.00977).
 
 <p align='center'>
-    <img src="posetrack.gif", width="360">
+    <img src="https://github.com/YuliangXiu/PoseFlow/blob/master/posetrack.gif", width="360">
 </p>
 
 Results on PoseTrack Challenge validation set:
@@ -38,7 +38,7 @@ Results on PoseTrack Challenge validation set:
 
 ## Installation
 
-1. Download PoseTrack Dataset from [PoseTrack](https://posetrack.net/) to `./posetrack_data/`
+1. Download PoseTrack Dataset (2018) from [PoseTrack](https://posetrack.net/) to `./posetrack_data/`
 2. (Optional) Use [DeepMatching](http://lear.inrialpes.fr/src/deepmatching/) to extract dense correspondences between adjcent frames in every video, please refer to [DeepMatching Compile Error](https://github.com/MVIG-SJTU/AlphaPose/issues/97) to compile DeepMatching correctly
 
 ```shell
@@ -46,9 +46,11 @@ pip install -r requirements.txt
 
 # Generate correspondences by DeepMatching
 # (More Robust but Slower)
+pipenv shell  # if you're using pipenv
 cd deepmatching
 make clean all
 make
+make python
 cd ..
 python matching.py --orb=0 
 
