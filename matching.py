@@ -118,5 +118,6 @@ if __name__ == '__main__':
                     orb_matching(img1,img2,vidname,img1_id,img2_id)
                 else:
                     # calc deep matching
-                    cmd = "./deepmatching/deepmatching %s %s -nt 10 -downscale 3 -out %s/%s_%s.txt > cache"%(img1,img2,vidname,img1_id,img2_id)
+                    cmd = "./deepmatching/deepmatching-static %s %s -nt 10 -downscale 3 -out %s/%s_%s.txt > cache"%(img1,img2,vidname,img1_id,img2_id)
+                    # cmd = "./deepmatching/deepmatching %s %s -nt 10 -downscale 3 -out %s/%s_%s.txt > cache"%(img1,img2,vidname,img1_id,img2_id)
                     os.system(cmd)
