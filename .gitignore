@@ -1,14 +1,19 @@
-__pycache__
-alpha-pose-results-test.json
-alpha-pose-results-val.json
-test-predict/*
-val-predict/*
-val-predict-bak/*
-test-predict-bak/*
-keypoint_result*
-pose-seq-nms.py
-*.npy
-*.so
-*.pyc
-.ipynb_checkpoints
-*/.ipynb_checkpoints/*
+# python temp files
+**/ __pycache__
+**.pyc
+
+# Pycharm
+.idea/**/workspace.xml
+
+# Pipenv
+Pipfile.lock
+
+# Workspace
+experiments/*
+posetrack_data/*
+cache
+
+# deepmatching
+deepmatching/*
+!deepmatching/Makefile
+
