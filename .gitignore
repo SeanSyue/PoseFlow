@@ -12,6 +12,7 @@ Pipfile.lock
 experiments/*
 posetrack_data/*
 cache
+*.pkl
 
 # deepmatching
 deepmatching/*
