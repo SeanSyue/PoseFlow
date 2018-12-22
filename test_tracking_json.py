@@ -8,7 +8,8 @@ ANNO_ROOT = '/home/ee303/DATASETS/posetrack/posetrack_2018/posetrack_data/annota
 RESULT_ROOT = '/home/ee303/WORKSPACE_DATA/PoseFlow/test_simple/track_results'
 
 
-DROP = 0.0
+# DROP = 0.1
+DROP = 0.15
 
 if __name__ == '__main__':
 
@@ -23,13 +24,10 @@ if __name__ == '__main__':
         f_annot = Path(ANNO_ROOT) / f'{video_name}.json'
         with f_annot.open() as f:
             annot = json.load(f)
-        # print(annot.keys())
 
         tracked_frames = sorted([n for n in track[video_name].keys() if n != 'num_persons'])
-        # print(tracked_frames)
 
         orig_imgs = [str(PurePath(img['file_name']).name) for img in annot['images']]
-        # print(orig_imgs)
 
         final = {'annolist': []}
 
@@ -53,9 +51,7 @@ if __name__ == '__main__':
 
                     point_struct = []
                     for idx, pose in enumerate(pose_pos):
-                        print(pose_score[idx])
                         if pose_score[idx] > DROP:
-                            print("BANG~!")
                             point_struct.append({"id": [idx], "x": [pose[0]], "y": [pose[1]], "score": [pose_score[idx]]})
 
                     final['annolist'][fid]['annorect'].append({"x1": [box_pos[0]],
