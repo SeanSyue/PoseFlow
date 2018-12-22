@@ -20,12 +20,22 @@ MATCH_THRES = 0.2
 # RMPE_PARTS_ID = [0, 1, 2, 3, 4, 5, 10, 11, 12, 13, 14, 15, 8, 9]
 RMPE_PARTS_ID = [16, 14, 12, 11, 13, 15, 10, 8, 6, 5, 7, 9, 0, 0, 1]
 
+
+def extract_rmpe_parts(pid_key, rmpe_parts_id):
+    new_score = deepcopy(pid_key['box_pose_score'])
+    new_pose = deepcopy(pid_key['box_pose_pos'])
+    pid_key['box_pose_score'] = new_score[rmpe_parts_id]
+    pid_key['box_pose_pos'] = new_pose[rmpe_parts_id, :]
+
+
 if __name__ == '__main__':
 
     with Path(INFO_PKL).open('rb') as f:
         track = pickle.load(f)
 
     for video_name in tqdm(track.keys()):
+
+        num_persons = 0
 
         frame_list = sorted(list(track[video_name].keys()))
         for idx, frame_name in enumerate(frame_list[:-1]):
@@ -45,16 +55,18 @@ if __name__ == '__main__':
                     track[video_name][frame_name][pid]['new_pid'] = pid
                     track[video_name][frame_name][pid]['match_score'] = 0
 
+                    extract_rmpe_parts(track[video_name][frame_name][pid], RMPE_PARTS_ID)
+
             max_pid_id = track[video_name][frame_name]['num_boxes']
 
+            # compute matches
             all_cors = np.loadtxt(str(PurePath(COR_ROOT) / PurePath(video_name).name / f'{frame_id}_{next_frame_id}_orb.txt'))
-
             cur_all_pids, cur_all_pids_fff = U.stack_all_pids(track[video_name], frame_list[:-1], idx, max_pid_id, LINK_LEN)
-
             match_indexes, match_scores = U.best_matching_hungarian(
                 all_cors, cur_all_pids, cur_all_pids_fff, track[video_name][next_frame_name], WEIGHTS, WEIGHTS_FFF, NUM,
                 MAG)
-            
+
+            # assign matchings
             for pid1, pid2 in match_indexes:
                 if match_scores[pid1][pid2] > MATCH_THRES:
                     track[video_name][next_frame_name][pid2 + 1]['new_pid'] = cur_all_pids[pid1]['new_pid']
@@ -68,6 +80,8 @@ if __name__ == '__main__':
                     track[video_name][next_frame_name][next_pid]['new_pid'] = max_pid_id
                     track[video_name][next_frame_name][next_pid]['match_score'] = 0
 
+                extract_rmpe_parts(track[video_name][next_frame_name][next_pid], RMPE_PARTS_ID)
+
             # # deal with unconsecutive frames caused by this fucking terrible dataset
             # gap = int(next_frame_id) - int(frame_id)
             # if gap > 1:
@@ -77,19 +91,7 @@ if __name__ == '__main__':
             #             new_frame_name = f'{(int(frame_id) + i):08}.jpg'
             #             track[video_name][new_frame_name] = deepcopy(track[video_name][frame_name])
 
-    for video_name in tqdm(track.keys()):
-        num_persons = 0
-        frame_list = sorted(list(track[video_name].keys()))
-        for fid, frame_name in enumerate(frame_list):
-            for pid in range(1, track[video_name][frame_name]['num_boxes'] + 1):
-                new_score = deepcopy(track[video_name][frame_name][pid]['box_pose_score'])
-                new_pose = deepcopy(track[video_name][frame_name][pid]['box_pose_pos'])
-                track[video_name][frame_name][pid]['box_pose_score'] = new_score[RMPE_PARTS_ID]
-                track[video_name][frame_name][pid]['box_pose_pos'] = new_pose[RMPE_PARTS_ID, :]
-                num_persons = track[video_name][frame_name][pid]['new_pid']
         track[video_name]['num_persons'] = num_persons
-
-    # print(track)
 
     with Path(TRACK_PKL).open('wb') as f:
         pickle.dump(track, f)
